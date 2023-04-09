@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Anime Retail Store</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Add Web3 Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.9.0/web3.min.js" integrity="sha512-mUvdtCaVKd9dby/UnYGKMLkP3eT7EA6QNFN5iSEjvMf8TFPq2oZFIemWL46iypQcL8xYNdx7wQIA1oYnTXuYhg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+				background-image: url('https://www.statcan.gc.ca/o1/sites/default/files/2021-11/shopping_2.jpg');
+				background-repeat: no-repeat;
+				background-attachment:fixed;
+				background-size:cover;
+            }
+			
+            
+/* Header styling */
+/* Header styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #cba135;
+    padding: 5px;
+}
+
+body{
+background-color: #f1dab6;
+}
+
+header h1 {
+    margin: 0;
+    flex: 1;
+}
+
+header button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #7a280e;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 40px;
+    width: 200px;
+}
+
+header button:first-child {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+
+
+            
+            /* Form styling */
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+            }
+            
+            label {
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+            
+            input {
+                padding: 10px;
+                border: 1px solid #CCC;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            button {
+                padding: 10px;
+                background-color: #9b00ff;
+                color: #FFF;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                width: 100%;
+            }
+            
+            button:hover {
+                opacity: 0.8;
+            }
+            
+            /* Forms visibility */
+            #add-user-record-form, #make-payment-form, #register-user-form, #view-product-record-form {
+                display: none;
+            }
+
+            #disconnect-metamask {
+                display: none;
+            }
+
+            #add-user-record-btn, #make-payment-btn, #register-user-btn, #view-products-record-btn {
+                display: none;
+            }
+
+            #retail-record-display {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Anime Retail Store</h1>
+            <button id="connect-metamask">Connect to Metamask</button>
+            <button id="disconnect-metamask">Disconnect from Metamask</button>
+            <button id="register-user-btn">Register User</button>
+            <button id="add-user-record-btn">Add Products</button>
+            <button id="view-products-record-btn">View Products</button>
+            <button id="make-payment-btn">Make Payment</button>
+        </header>
+        
+        <main>
+            <h2 id="userArea"></h2>
+            <!-- Register User Retail Form -->
+            <div id="register-user-form">
+               <br><h2>Register User:</h2></br>
+                <form>
+                    <label for="user-name">User Name:</label>
+                    <input type="text" id="user-name" placeholder="Enter User name...">
+                    
+                    <label for="user-id">User ID:</label>
+                    <input type="text" id="user-id" placeholder="Enter User ID...">
+                    
+                    <label for="user-email">User Email-ID:</label>
+                    <input type="text" id="user-email" placeholder="Enter User Email-ID...">
+                    
+                    <button id="register-user">Register User</button>
+                </form>
+            </div>
+            <!-- Add User Records Form -->
+            <div id="add-user-record-form">
+                <h2>Add Products:</h2>
+                <form>
+                    <label for="product-name">Product Name:</label>
+                    <input type="text" id="product-name" placeholder="Enter Product Name">
+                    
+                    <label for="product-record-id">Product ID:</label>
+                    <input type="number" id="product-record-id" placeholder="Enter Product ID">
+
+                    <label for="product-address">Product Address:</label>
+                    <input type="text" id="product-address" placeholder="Enter Product wallet  Address:">
+                    
+                    <label for="product-description">Product Description:</label>
+                    <input type="text" id="product-description" placeholder="Enter Product Description.">
+                    
+                    <label for="product-quantity">Product Quantity:</label>
+                    <input type="text" id="product-quantity" placeholder="Enter Product Quantity:..">
+                    
+                    <button id="add-product-record">Add Product to Cart</button>
+                </form>
+            </div>
+            <!-- View Products  Form -->
+            <div id="view-product-record-form">
+                <h2>View Products:</h2>
+                <form>
+                    <label for="product-record-number">Product ID:</label>
+                    <input type="text" id="product-record-number" placeholder="Enter Product ID...">
+                    <label for="product-record-address">Product Address:</label>
+                    <input type="text" id="product-record-address" placeholder="Enter Product Wallet Address...">
+                    
+                    <button id="view-product-record">View Product  Record</button>
+                    
+                    <!--Display Product Record -->
+                    <div id="retail-record-display">
+                    <label for="retail-record">Product Details:</label>
+                    <label for ="get-product-name">Product Name:</label>
+                    <textarea id="get-product-name" rows="1" cols="50" placeholder="Product Name" readonly></textarea>
+                    <label for ="get-product-description">Product Description:</label>
+                    <textarea id="get-product-description" rows="1" cols="50" placeholder="Product Description" readonly></textarea>
+                    <label for ="get-product-quantity">Product Quantity:</label>
+                    <textarea id="get-product-quantity" rows="1" cols="50" placeholder="Product Quantity" readonly></textarea>
+                    </div>
+                </form>
+            </div>
+            <!-- Make Payment to Buy Products Form -->
+            <div id="make-payment-form">
+                <h2>Make Payment:</h2>
+                <form>
+                    <label for="product-record-id">Product ID:</label>
+                    <input type="text" id="product-record-id" placeholder="Enter Product ID...">
+                    
+                    <label for="amount">Amount:</label>
+                    <input type="text" id="amount" placeholder="Enter payment amount...">
+                    
+                    <button id="make-payment">Make Payment</button>
+                </form>
+            </div>
+        </main>
+        
+        <script>
+            const addProductRecordBtn = document.getElementById('add-user-record-btn');
+            const makePaymentBtn = document.getElementById('make-payment-btn');
+            const disconnectMetamaskBtn = document.getElementById('disconnect-metamask');
+            const registerUserBtn = document.getElementById('register-user-btn');
+            const viewProductsRecordBtn = document.getElementById('view-products-record-btn');
+            const addUserRecordForm = document.getElementById('add-user-record-form');
+            const makePaymentForm = document.getElementById('make-payment-form');
+            const registerUserForm = document.getElementById('register-user-form');
+            const viewProductRecordForm = document.getElementById('view-product-record-form');
+            const retailRecordDisplay = document.getElementById('retail-record-display');
+
+            ///////////////////////////////// FORMS VISIBILITY /////////////////////////////////
+            
+            addProductRecordBtn.addEventListener('click', () => {
+                addUserRecordForm.style.display = 'block';
+                makePaymentForm.style.display = 'none';
+                registerUserForm.style.display = 'none';
+                viewProductRecordForm.style.display = 'none';
+            });
+
+            makePaymentBtn.addEventListener('click', () => {
+                makePaymentForm.style.display = 'block';
+                addUserRecordForm.style.display = 'none';
+                registerUserForm.style.display = 'none';
+                viewProductRecordForm.style.display = 'none';
+            });
+
+            registerUserBtn.addEventListener('click', () => {
+                registerUserForm.style.display = 'block';
+                addUserRecordForm.style.display = 'none';
+                makePaymentForm.style.display = 'none';
+                viewProductRecordForm.style.display = 'none';
+            });
+
+            viewProductsRecordBtn.addEventListener('click', () => {
+                viewProductRecordForm.style.display = 'block';
+                addUserRecordForm.style.display = 'none';
+                makePaymentForm.style.display = 'none';
+                registerUserForm.style.display = 'none';
+            });
+            ///////////////////////////////// Connection to  METAMASK /////////////////////////////////
+            // Connect to Metamask Functions and its logic
+            const connectMetamaskBtn = document.getElementById('connect-metamask');
+            
+            if (connectMetamaskBtn.innerHTML == 'Connect to Metamask'){
+                connectMetamaskBtn.addEventListener('click', async () => {
+                    // Check if Metamask is installed
+                    if (typeof window.ethereum !== 'undefined') {
+                        const accounts = await ethereum.request({method: "eth_requestAccounts"});
+                    account = accounts[0];
+                    document.getElementById("userArea").innerHTML = `User Account: ${account}`;
+                    // hide connect to Metamask button
+                    connectMetamaskBtn.style.display = 'none';
+                    // show disconnect from Metamask button
+                    disconnectMetamaskBtn.style.display = 'block';
+                    // show add medical record button
+                    addProductRecordBtn.style.display = 'block';
+                    // show make payment button
+                    makePaymentBtn.style.display = 'block';
+                    // show register doctor button
+                    registerUserBtn.style.display = 'block';
+                    // show view medical record button
+                    viewProductsRecordBtn.style.display = 'block';
+                    } else {
+                        alert('Please install Metamask!');
+                    }
+                });
+            }
+
+            // Disconnect from Metamask logic
+            disconnectMetamaskBtn.addEventListener('click', () => {
+                // hide disconnect from Metamask button
+                disconnectMetamaskBtn.style.display = 'none';
+                // show connect to Metamask button
+                connectMetamaskBtn.style.display = 'block';
+                // hide add medical record button
+                addProductRecordBtn.style.display = 'none';
+                // hide make payment button
+                makePaymentBtn.style.display = 'none';
+                // hide add medical record form
+                addUserRecordForm.style.display = 'none';
+                // hide make payment form
+                makePaymentForm.style.display = 'none';
+                // hide register doctor form
+                registerUserForm.style.display = 'none';
+
+                // hide view medical record form
+
+                viewProductRecordForm.style.display = 'none';
+            });
+
+            ///////////////////////////////// REGISTER User to Retail Store /////////////////////////////////
+
+            // Register User
+
+            const registerUser = document.getElementById('register-user'); 
+
+            registerUser.addEventListener('click', async () => {
+                const userName = document.getElementById('user-name').value;
+                const userId = document.getElementById('user-id').value;
+                const userEmail = document.getElementById('user-email').value;
+                console.log(userName, userId, userEmail);
+                await connectContract();
+
+                // get the account from user area
+                const account = document.getElementById('userArea').innerHTML.split(' ')[2];
+                console.log(account);
+
+                await contract.methods.registerUser(userId, userName, userEmail).send({from: account});
+            });
+
+            ///////////////////////////////// ADD User Details RECORD /////////////////////////////////
+            // Add User Record
+            const addProductRecord = document.getElementById('add-product-record');
+
+            const connectContract = async () => {
+            const ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productRecordId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "productAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_productName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_productDescription",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_productQuantity",
+				"type": "string"
+			}
+		],
+		"name": "addProductRecord",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "makePayment",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_speciality",
+				"type": "string"
+			}
+		],
+		"name": "registerUser",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_productAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_productId",
+				"type": "uint256"
+			}
+		],
+		"name": "getProductRecord",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "products",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isPaid",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "users",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "speciality",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]; // Taking ABI from Remix IDE
+            const Address = "0xB4C8C811444f65e8F6D419117d73e8f5A096Fb48"; // Taking Address from Remix 
+            window.web3 = await new Web3(window.ethereum);
+            window.contract = await new window.web3.eth.Contract(ABI, Address);
+        }
+            
+            addProductRecord.addEventListener('click', async () => {
+                const productName = document.getElementById('product-name').value;
+                const productAddress = document.getElementById('product-address').value;
+                const productRecordId = document.getElementById('product-record-id').value;
+                const productDescription = document.getElementById('product-description').value;
+                const productQuantity = document.getElementById('product-quantity').value;
+                
+                await connectContract();
+
+                // get the account from user area
+                const account = document.getElementById('userArea').innerHTML.split(' ')[2];
+                console.log(account);
+
+                await contract.methods.addProductRecord(productRecordId, productAddress, productName, productDescription, productQuantity).send({from: account}).then((res) => {
+                    alert('Product added to the cart');
+                });
+            });
+
+            ///////////////////////////////// MAKE PAYMENT /////////////////////////////////
+
+            // Make Payment
+
+            const makePayment = document.getElementById('make-payment');
+
+            makePayment.addEventListener('click', async () => {
+                const productRecordId = document.getElementById('product-record-id').value;
+                const amount = document.getElementById('amount').value;
+                
+                await connectContract();
+
+                // get the account from user area
+                const account = document.getElementById('userArea').innerHTML.split(' ')[2];
+                console.log(account);
+
+                await contract.methods.makePayment().send({from: account, value: web3.utils.toWei(amount, 'ether')}).then((res) => {
+                    alert('Payment Made');
+                });
+            });
+            
+            ///////////////////////////////// VIEW Products from Cart /////////////////////////////////
+
+            // View Products Record
+
+            const viewProductRecord = document.getElementById('view-product-record');
+
+            viewProductRecord.addEventListener('click', async () => {
+                const productRecordId = document.getElementById('product-record-number').value;
+                const productRecordAddress = document.getElementById('product-record-address').value;
+                console.log(productRecordId)
+                
+                await connectContract();
+
+                // get the account from user area
+                const account = document.getElementById('userArea').innerHTML.split(' ')[2];
+                console.log(account);
+
+                await contract.methods.getProductRecord(productRecordAddress, productRecordId).call({from: account}).then((res) => {
+                    console.log(res);
+                    retailRecordDisplay.style.display = 'block';
+                    document.getElementById('get-product-name').value = res[0];
+                    document.getElementById('get-product-description').value = res[1];
+                    document.getElementById('get-product-quantity').value = res[2];
+                });
+            });
+
+        </script>
+    </body>
+</html>
